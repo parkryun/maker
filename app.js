@@ -103,7 +103,7 @@
 
 // PWA 서비스 워커 등록
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/maker.io/sw.js')
+    navigator.serviceWorker.register('./sw.js')
         .then(() => console.log('Service Worker 등록 성공'))
         .catch((err) => console.error('Service Worker 등록 실패:', err));
 }

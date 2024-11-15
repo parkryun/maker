@@ -101,20 +101,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// PWA 서비스 워커 등록
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
-        .then(() => console.log('Service Worker 등록 성공'))
-        .catch((err) => console.error('Service Worker 등록 실패:', err));
-}
-
-// 음성 안내 함수
-function speak(text) {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'ko-KR';
-    window.speechSynthesis.speak(utterance);
-}
-
 
 // 초기 설정// 초기 설정
 let countdownInterval;
@@ -122,12 +108,14 @@ let signalColor = 'red'; // 초기 신호 상태
 
 // 음성 안내 함수
 function speak(text) {
+    console.log(`Speaking: ${text}`); // 로그 출력으로 확인
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'ko-KR';
     window.speechSynthesis.speak(utterance);
 }
 
 // 카운트다운 함수
+
 function startCountdown(timeToChange, isGreenLight, isFlashing = false) {
     clearInterval(countdownInterval);
 
@@ -136,28 +124,35 @@ function startCountdown(timeToChange, isGreenLight, isFlashing = false) {
     // 카운트다운 색상 설정
     countdownElement.classList.remove('red', 'green', 'blink');
     countdownElement.classList.add(isGreenLight ? 'green' : 'red');
-    if (isGreenLight && isFlashing) {
-        countdownElement.classList.add('blink'); // 점멸 효과 추가
-    }
+    let originalTime = timeToChange; // 주어진 원래 시간 저장
+
+    // 깜박임을 위한 변수
+    let blinkInterval;
 
     // 카운트다운 시작
     countdownInterval = setInterval(() => {
         countdownElement.textContent = timeToChange;
 
+        // 시간이 60% 이하로 남았고 초록불인 경우 깜박이기 시작
+        if (isGreenLight && timeToChange <= originalTime * 0.6) {
+            // 깜박임이 아직 시작되지 않았으면 시작
+            if (!blinkInterval) {
+                blinkInterval = setInterval(() => {
+                    countdownElement.style.visibility = countdownElement.style.visibility === 'hidden' ? 'visible' : 'hidden';
+                }, 500); // 500ms 간격으로 깜박임
+            }
+        }
+
         // 시간이 0초가 될 때의 동작
         if (timeToChange === 0) {
             clearInterval(countdownInterval);
+            if (blinkInterval) clearInterval(blinkInterval); // 깜박임 멈춤
+            countdownElement.style.visibility = 'visible'; // 최종적으로 보이도록 설정
 
             if (isGreenLight) {
-                if (isFlashing) {
-                    speak("빨간 불이 되었습니다.");
-                    signalColor = 'red';
-                    stopNavigation(); // 빨간 불이 되면 stopNavigation 호출
-                } else {
-                    speak("빨간 불이 되었습니다.");
-                    signalColor = 'red';
-                    stopNavigation(); // 빨간 불이 되면 stopNavigation 호출
-                }
+                speak("빨간 불이 되었습니다.");
+                signalColor = 'red';
+                stopNavigation(); // 빨간 불이 되면 stopNavigation 호출
             } else {
                 speak("초록 불이 되었습니다.");
                 signalColor = 'green';
@@ -167,6 +162,7 @@ function startCountdown(timeToChange, isGreenLight, isFlashing = false) {
         timeToChange -= 1;
     }, 1000);
 }
+
 
 // 신호등 상태 업데이트 함수
 function updateTrafficLightStatus(data) {
@@ -219,3 +215,41 @@ function stopNavigation() {
 // 버튼 클릭 이벤트
 document.getElementById('start-navigation').addEventListener('click', startNavigation);
 document.getElementById('stop-navigation').addEventListener('click', stopNavigation);
+
+// API
+const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+const apiUrl = "https://www.naver.com";
+
+// 데이터를 가져오는 함수
+async function fetchData() {
+    try {
+        const response = await fetch(proxyUrl+apiUrl, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP 오류 발생: ${response.status}`);
+        }
+
+        const data = await response.json(); // 응답 데이터를 JSON으로 변환
+        return data; // 데이터를 반환
+    } catch (error) {
+        console.error('API 호출 중 오류 발생:', error);
+        return { message: '오류가 발생했습니다.' }; // 에러 메시지 반환
+    }
+}
+
+// 데이터를 화면에 표시하는 함수
+function displayData(data) {
+    const container = document.getElementById('data-container');
+    container.textContent = data.message || '데이터 없음'; // message 키의 값 표시
+}
+
+// 버튼 클릭 이벤트 추가
+document.getElementById('fetch-button').addEventListener('click', async () => {
+    const data = await fetchData(); // 데이터를 가져오고
+    displayData(data); // 화면에 표시
+});

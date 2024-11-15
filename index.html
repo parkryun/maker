@@ -5,20 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accessible Navigation</title>
     <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu,person">
+
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="manifest" href="./manifest.json">
-    <link rel="apple-touch-icon" href="icon-152x152.png" />
-    <link rel="apple-touch-icon" href="icon-192x192.png" />
-    <link rel="apple-touch-icon" href="icon-384x384.png" />
-    <link rel="apple-touch-icon" href="icon-512x512.png" />
-    <link rel="icon" href="favicon.ico">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Spoqa+Han+Sans+Neo:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <header>
+        <span class="material-symbols-outlined">menu</span> <!-- 왼쪽 그리드 아이콘 -->
+        <h1>내비게이션</h1>
+        <span class="material-symbols-outlined">person</span> <!-- 오른쪽 사용자 아이콘 -->
+    </header>
+
     <div class="container">
         <div id="countdown" class="countdown"></div>
-        <button id="start-navigation">신호등 정보</button>
-        <button id="stop-navigation" style="display: none;">신호등 정보 받지 않기</button>
+        <button id="start-navigation">신호등 정보 알림</button>
+        <button id="stop-navigation" style="display: none;">정보 알림 종료</button>
     </div>
+    <main>
+        <button id="fetch-button">데이터 가져오기</button>
+        <div id="data-container">데이터가 여기에 표시됩니다.</div>
+    </main>
+
     <script src="app.js"></script>
 </body>
 </html>

@@ -10,12 +10,41 @@ body, html {
     height: 100%;
     background-color: #1a1a1a;
     color: #f1f1f1;
-    font-family: 'Noto Sans KR', Arial, sans-serif;
+    font-family: 'Spoqa Han Sans Neo', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start; /* 상단 정렬 */
     text-align: center;
+}
+
+/* 헤더 스타일 */
+header {
+    width: 100%;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 양쪽 정렬 */
+    color: #f1f1f1;
+}
+
+header h1 {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #f1f1f1;
+    letter-spacing: 0.1em; /* 문자 간격을 추가하여 스타일 */
+    margin: 0;
+}
+
+/* 헤더 아이콘 스타일 */
+header .material-symbols-outlined {
+    font-size: 1.8em; /* 아이콘 크기 설정 */
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+header .material-symbols-outlined:hover {
+    color: #ccc; /* 아이콘 호버 시 색상 변경 */
 }
 
 /* 컨테이너 스타일 */
@@ -27,9 +56,9 @@ body, html {
     flex-direction: column;
     align-items: center;
     gap: 30px; /* 숫자와 버튼 사이의 간격 */
+    margin-top: 20px; /* 헤더 아래 공간 추가 */
 }
 
-/* 버튼 스타일 - 짧고 뚱뚱하게 */
 button {
     width: 70%; /* 가로 너비 조정 */
     padding: 18px 0; /* 높이 조정 */
@@ -41,6 +70,8 @@ button {
     border-radius: 12px;
     cursor: pointer;
     transition: background-color 0.3s;
+    
+    font-family: "Jua", sans-serif;
 }
 
 button:hover {

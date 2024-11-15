@@ -101,6 +101,21 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// PWA 서비스 워커 등록
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+        .register('/sw.js')
+        .then(() => console.log('Service Worker 등록 성공'))
+        .catch((err) => console.error('Service Worker 등록 실패:', err));
+}
+
+// 음성 안내 함수
+function speak(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ko-KR';
+    window.speechSynthesis.speak(utterance);
+}
+
 
 // 초기 설정// 초기 설정
 let countdownInterval;

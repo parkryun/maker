@@ -1,0 +1,94 @@
+/* 기본 스타일 설정 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    background-color: #1a1a1a;
+    color: #f1f1f1;
+    font-family: 'Noto Sans KR', Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* 컨테이너 스타일 */
+.container {
+    width: 100%;
+    max-width: 320px; /* 스마트폰에 적합한 최대 너비 */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px; /* 숫자와 버튼 사이의 간격 */
+}
+
+/* 버튼 스타일 - 짧고 뚱뚱하게 */
+button {
+    width: 70%; /* 가로 너비 조정 */
+    padding: 18px 0; /* 높이 조정 */
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #1a1a1a;
+    background-color: #bbb;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #ddd;
+}
+
+/* 카운트다운 숫자 스타일 */
+.countdown {
+    font-size: 7em; /* 숫자 크기를 더 크게 */
+    font-weight: bold;
+    color: transparent; /* 기본 투명, JavaScript에서 색상 설정 */
+}
+
+/* 빨간색 숫자 */
+.countdown.red {
+    color: #ff4d4d;
+}
+
+/* 초록색 숫자 */
+.countdown.green {
+    color: #4CAF50;
+}
+
+/* 점멸 효과 */
+.countdown.blink {
+    animation: blink-animation 1s steps(2, start) infinite;
+}
+
+@keyframes blink-animation {
+    50% {
+        opacity: 0;
+    }
+}
+
+/* 반응형 스타일 - 작은 화면에 맞춤 */
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+        gap: 20px;
+    }
+    
+    button {
+        width: 80%; /* 작은 화면에서 버튼 너비 증가 */
+        padding: 15px 0;
+        font-size: 1.1em;
+    }
+
+    .countdown {
+        font-size: 6em; /* 작은 화면에서 숫자 크기 조정 */
+    }
+}

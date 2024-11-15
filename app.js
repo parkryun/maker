@@ -227,7 +227,7 @@ async function fetchData() {
             headers: {
                 'Content-Type': 'application/json'
             }
-        });
+        }); 
 
         if (!response.ok) {
             throw new Error(`HTTP 오류 발생: ${response.status}`);

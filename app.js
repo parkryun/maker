@@ -217,7 +217,7 @@ document.getElementById('start-navigation').addEventListener('click', startNavig
 document.getElementById('stop-navigation').addEventListener('click', stopNavigation);
 
 // API
-const apiUrl = "https://port-0-blinker-m3b39e20a1510d6a.sel4.cloudtype.app/confirm/json";
+const apiUrl = "https://port-0-blinker-m3b39e20a1510d6a.sel4.cloudtype.app/main_crossboard";
 
 // 데이터를 가져오는 함수
 async function fetchData() {

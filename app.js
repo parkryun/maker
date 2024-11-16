@@ -248,7 +248,9 @@ async function fetchData() {
 // 데이터를 화면에 표시하는 함수
 function displayData(data) {
     const container = document.getElementById('data-container');
+    console.log(9)
     container.textContent = data.message || '데이터 없음'; // message 키의 값 표시
+    console.log(8)
 }
 
 // 버튼 클릭 이벤트 추가

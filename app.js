@@ -212,18 +212,3 @@ function stopNavigation() {
 // 버튼 클릭 이벤트
 document.getElementById('start-navigation').addEventListener('click', startNavigation);
 document.getElementById('stop-navigation').addEventListener('click', stopNavigation);
-
-// 데이터를 화면에 표시하는 함수
-function displayData(data) {
-    const container = document.getElementById('data-container');
-    console.log(9)
-    container.textContent = data || '데이터 없음'; // message 키의 값 표시
-    console.log(8)
-}
-
-// 버튼 클릭 이벤트 추가
-document.getElementById('fetch-button').addEventListener('click', async () => {
-    const data = await fetchData(); // 데이터를 가져오고
-    displayData(data); // 화면에 표시
-});
-document.getElementById('fetch-button').addEventListener('click',displayData(1));

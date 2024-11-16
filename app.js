@@ -13,7 +13,7 @@ function speak(text) {
 // API
 // 데이터를 가져오는 함수
 async function fetchCrossboardData() {
-    const apiUrl = "http://13.124.65.0:8000/main_crossboard";
+    const apiUrl = "https://port-0-blinker-m3b39e20a1510d6a.sel4.cloudtype.app/main_crossboard";
 
     try {
         const response = await fetch(apiUrl, {

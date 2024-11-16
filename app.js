@@ -234,6 +234,7 @@ async function fetchData() {
         }
 
         const data = await response.json(); // 응답 데이터를 JSON으로 변환
+        console.log(data)
         
         return data; // 데이터를 반환
     } catch (error) {

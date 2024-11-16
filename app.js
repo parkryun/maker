@@ -76,6 +76,7 @@ function startCountdown(timeToChange, isGreenLight, isFlashing = false,  green_t
                 color = 'red';
                 stopNavigation(); // 빨간 불이 되면 stopNavigation 호출
             } else {
+                speak("따르릉");
                 speak("초록 불이 되었습니다.");
                 color = 'green';
                 startCountdown(green_total_time, true, false, green_total_time); // 새로운 초록 불 카운트다운 시작 

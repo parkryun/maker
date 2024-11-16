@@ -150,6 +150,7 @@ function updateTrafficLightStatus(data) {
         if (color === 'red') {
             if (time_remaining === 0) {
                 // 빨간 불에서 초록 불로 전환
+                speak("따르릉");
                 speak("초록 불이 되었습니다.");
             } else {
                 speak(`현재 신호등이 빨간 불입니다. 다음 초록 불까지 ${time_remaining}초 남았습니다.`);
@@ -157,7 +158,7 @@ function updateTrafficLightStatus(data) {
             startCountdown(time_remaining, false, false, green_total_time); // 빨간 불 카운트다운
         } else if (color === 'green') {
             // 초록 불 상태
-            if (isFlashing) {
+            if (isFlashing) { // 이 기능 영상 찍을 때 쓰지 않기 
                 speak("다음 신호를 기다려 주십시오");
                 startCountdown(time_remaining, true, true, green_total_time); // 점멸 상태에서 N초 후 빨간 불로 전환
             } else {

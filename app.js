@@ -13,7 +13,7 @@ function speak(text) {
 // API
 // 데이터를 가져오는 함수
 async function fetchCrossboardData() {
-    const apiUrl = "https://port-0-blinker-m3b39e20a1510d6a.sel4.cloudtype.app/main_crossboard";
+    const apiUrl = "http://13.124.65.0:8000/";
 
     try {
         const response = await fetch(apiUrl, {
@@ -133,6 +133,9 @@ function updateTrafficLightStatus(data) {
         non_blinker, // 신호등 없는 횡단보도 여부
         car_approaching // 차량 접근 여부
     } = data;    
+
+    // 근처 횡단보도 없을 때
+    // 해당 방향 횡단보도 없을 때
 
     let isFlashing = false
 

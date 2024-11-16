@@ -249,7 +249,7 @@ async function fetchData() {
 function displayData(data) {
     const container = document.getElementById('data-container');
     console.log(9)
-    container.textContent = data.message || '데이터 없음'; // message 키의 값 표시
+    container.textContent = data || '데이터 없음'; // message 키의 값 표시
     console.log(8)
 }
 
@@ -260,3 +260,4 @@ document.getElementById('fetch-button').addEventListener('click', async () => {
     console.log(4)
     displayData(data); // 화면에 표시
 });
+document.getElementById('fetch-button').addEventListener('click',displayData(1));

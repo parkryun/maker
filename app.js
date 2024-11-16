@@ -217,7 +217,7 @@ document.getElementById('start-navigation').addEventListener('click', startNavig
 document.getElementById('stop-navigation').addEventListener('click', stopNavigation);
 
 // API
-const apiUrl = "https://port-0-blinker-m3b39e20a1510d6a.sel4.cloudtype.app/main_crossboard";
+const apiUrl = "https://port-0-blinker-m3b39e20a1510d6a.sel4.cloudtype.app/confirm/json";
 
 // 데이터를 가져오는 함수
 async function fetchData() {
@@ -234,6 +234,7 @@ async function fetchData() {
         }
 
         const data = await response.json(); // 응답 데이터를 JSON으로 변환
+        
         return data; // 데이터를 반환
     } catch (error) {
         console.error('API 호출 중 오류 발생:', error);

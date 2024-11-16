@@ -217,7 +217,7 @@ document.getElementById('start-navigation').addEventListener('click', startNavig
 document.getElementById('stop-navigation').addEventListener('click', stopNavigation);
 
 // API
-const apiUrl = "https://port-0-blinker-m3b39e20a1510d6a.sel4.cloudtype.app/confirm/json";
+const apiUrl = "https://port-0-blinker-m3b39e20a1510d6a.sel4.cloudtype.app/main_crossboard";
 
 // 데이터를 가져오는 함수
 async function fetchData() {
@@ -255,9 +255,7 @@ function displayData(data) {
 
 // 버튼 클릭 이벤트 추가
 document.getElementById('fetch-button').addEventListener('click', async () => {
-    console.log(3)
     const data = await fetchData(); // 데이터를 가져오고
-    console.log(4)
     displayData(data); // 화면에 표시
 });
 document.getElementById('fetch-button').addEventListener('click',displayData(1));

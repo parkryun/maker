@@ -234,7 +234,9 @@ async function fetchData() {
         }
 
         const data = await response.json(); // 응답 데이터를 JSON으로 변환
+        console.log(1)
         console.log(data)
+        console.log(2)
         
         return data; // 데이터를 반환
     } catch (error) {
@@ -251,6 +253,8 @@ function displayData(data) {
 
 // 버튼 클릭 이벤트 추가
 document.getElementById('fetch-button').addEventListener('click', async () => {
+    console.log(3)
     const data = await fetchData(); // 데이터를 가져오고
+    console.log(4)
     displayData(data); // 화면에 표시
 });

@@ -151,10 +151,8 @@ function updateTrafficLightStatus(data) {
             if (time_remaining === 0) {
                 // 빨간 불에서 초록 불로 전환
                 speak("초록 불이 되었습니다.");
-                monitorCarApproach(3000); // 3초 동안 차량 접근 확인
             } else {
                 speak(`현재 신호등이 빨간 불입니다. 다음 초록 불까지 ${time_remaining}초 남았습니다.`);
-                console.log(1)
             }
             startCountdown(time_remaining, false, false, green_total_time); // 빨간 불 카운트다운
         } else if (color === 'green') {
@@ -165,11 +163,6 @@ function updateTrafficLightStatus(data) {
             } else {
                 speak("현재 신호등이 초록 불입니다.");
                 startCountdown(time_remaining, true, false, green_total_time); // 초록 불 카운트다운
-
-                // 점멸등이 아닐 경우 차량 접근 확인
-                if (!isFlashing) {
-                    monitorCarApproach(3000);
-                }
             }
         }
     }
@@ -182,6 +175,7 @@ let navigationInterval = null;
 async function pollData() {
     try {
         const data = await fetchCrossboardData(true); // Mock 데이터 사용
+
         if (data) {
             updateTrafficLightStatus(data); // 데이터 처리
         } else {

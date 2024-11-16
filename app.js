@@ -63,6 +63,10 @@ function startCountdown(timeToChange, isGreenLight, isFlashing = false,  green_t
                     countdownElement.style.visibility = countdownElement.style.visibility === 'hidden' ? 'visible' : 'hidden';
                 }, 500); // 500ms 간격으로 깜박임
             }
+            if(timeToChange > 0) {
+                speak(`${timeToChange}`)
+            }
+            
         }
 
         // 시간이 0초가 될 때의 동작
@@ -72,15 +76,13 @@ function startCountdown(timeToChange, isGreenLight, isFlashing = false,  green_t
             countdownElement.style.visibility = 'visible'; // 최종적으로 보이도록 설정
 
             if (isGreenLight) {
-                speak("빨간 불이 되었습니다.");
+                speak("빨간 불입니다");
                 color = 'red';
                 stopNavigation(); // 빨간 불이 되면 stopNavigation 호출
             } else {
-                speak("따르릉");
-                speak("초록 불이 되었습니다.");
+                speak("초록 불입니다");
                 color = 'green';
                 startCountdown(green_total_time, true, false, green_total_time); // 새로운 초록 불 카운트다운 시작 
-                monitorCarApproach(3000); // 3초 동안 차량 접근 확인
             }
         }
         timeToChange -= 1;
@@ -97,6 +99,10 @@ async function monitorCarApproach(duration) {
         // 3초가 경과하면 종료
         if (elapsedTime >= duration) {
             console.log("monitorCarApproach 종료");
+            if (!vehicleAlerted) {
+                // 차량 접근 안내가 없었던 경우만 "주의해서 건너주세요" 출력
+                speak("주의해서 건너주세요");
+            }
             return;
         }
 
@@ -118,6 +124,7 @@ async function monitorCarApproach(duration) {
     }
 
     poll(); // 폴링 시작
+    
 }
 
 
@@ -134,9 +141,6 @@ function updateTrafficLightStatus(data) {
         car_approaching // 차량 접근 여부
     } = data;    
 
-    // 근처 횡단보도 없을 때
-    // 해당 방향 횡단보도 없을 때
-
     let isFlashing = false
 
     if (color === "green" && time_remaining <= green_total_time * 0.6) {
@@ -147,26 +151,26 @@ function updateTrafficLightStatus(data) {
 
     if (non_blinker) {
         // 신호등 없는 횡단보도
-        speak("신호등이 없는 횡단보도입니다. 주의하세요");
-        monitorCarApproach(3000); // 3초 동안 차량 접근 확인
+        speak("신호등이 없는 보도입니다.");
+        monitorCarApproach(3000); // 3초 동안 차량 접근 확인 멘트 분리
     } else {
         // 신호등 있는 횡단보도
         if (color === 'red') {
             if (time_remaining === 0) {
                 // 빨간 불에서 초록 불로 전환
-                speak("따르릉");
-                speak("초록 불이 되었습니다.");
+                speak("초록 불입니다.");
             } else {
-                speak(`현재 신호등이 빨간 불입니다. 다음 초록 불까지 ${time_remaining}초 남았습니다.`);
+                speak(`현재 빨간 불입니다. 초록 불까지 ${time_remaining}초 남았습니다.`);
+                console.log(1)
             }
             startCountdown(time_remaining, false, false, green_total_time); // 빨간 불 카운트다운
         } else if (color === 'green') {
             // 초록 불 상태
-            if (isFlashing) { // 이 기능 영상 찍을 때 쓰지 않기 
+            if (isFlashing) {
                 speak("다음 신호를 기다려 주십시오");
                 startCountdown(time_remaining, true, true, green_total_time); // 점멸 상태에서 N초 후 빨간 불로 전환
             } else {
-                speak("현재 신호등이 초록 불입니다.");
+                speak("초록 불입니다.");
                 startCountdown(time_remaining, true, false, green_total_time); // 초록 불 카운트다운
             }
         }

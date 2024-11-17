@@ -12,30 +12,30 @@ function speak(text) {
 }
 
 // API 데이터 가져오기 함수
-async function fetchCrossboardData(useMock = true) {
-    // const apiUrl = "http://13.124.65.0:8000/main_crossboard";
+async function fetchCrossboardData(useMock = false) {
+    const apiUrl = "https://port-0-blinker-m3b39e20a1510d6a.sel4.cloudtype.app/main_crossboard";
 
-    // try {
-    //     const response = await fetch(apiUrl, {
-    //         method: 'GET',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         }
-    //     }); 
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }); 
 
-    //     if (!response.ok) {
-    //         throw new Error(`HTTP 오류 발생: ${response.status}`);
-    //     }
+        if (!response.ok) {
+            throw new Error(`HTTP 오류 발생: ${response.status}`);
+        }
 
-    //     const data = await response.json(); // 응답 데이터를 JSON으로 변환
+        const data = await response.json(); // 응답 데이터를 JSON으로 변환
 
-    //     console.log(data)
+        console.log(data)
         
-    //     return data; // 데이터를 반환
-    // } catch (error) {
-    //     console.error('API 호출 중 오류 발생:', error);
-    //     return { message: '오류가 발생했습니다.' }; // 에러 메시지 반환
-    // }
+        return data; // 데이터를 반환
+    } catch (error) {
+        console.error('API 호출 중 오류 발생:', error);
+        return { message: '오류가 발생했습니다.' }; // 에러 메시지 반환
+    }
     if (useMock) {
         // 테스트용 데이터
         

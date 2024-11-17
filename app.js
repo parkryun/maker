@@ -212,6 +212,15 @@ let navigationInterval = null;
 async function pollData() {
     try {
         const data = await fetchCrossboardData(true); // Mock 데이터 사용
+        if (data.id === 0) {
+            speak("근처에 횡단보도가 없습니다.")
+            stopNavigation(); // 네비게이션 종료
+            return; // 종료
+        } else if(data.id === 1) {
+            speak("횡단보도가 다른 방향에 있습니다.")
+            stopNavigation(); // 네비게이션 종료
+            return; // 종료
+        }
         if (data) {
             updateTrafficLightStatus(data); // 데이터 처리
             return data; // 데이터 반환
@@ -224,7 +233,6 @@ async function pollData() {
     return null; // 오류가 발생하거나 데이터가 없는 경우 null 반환
 }
 
-// 네비게이션 시작 함수
 function startNavigation() {
     console.log("startNavigation 호출됨"); // 디버깅 로그
 
@@ -236,6 +244,7 @@ function startNavigation() {
 
     // 데이터 폴링 시작
     pollData().then((data) => {
+
         if (data.non_blinker) {
             // 신호등 없는 횡단보도
             speak("신호등이 없는 보도입니다.");

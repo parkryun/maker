@@ -1,3 +1,4 @@
+
 // 초기 설정// 초기 설정
 let countdownInterval;
 let color = 'red'; // 초기 신호 상태
@@ -10,70 +11,99 @@ function speak(text) {
     window.speechSynthesis.speak(utterance);
 }
 
-// API
-// 데이터를 가져오는 함수
-async function fetchCrossboardData() {
-    const apiUrl = "https://port-0-blinker-m3b39e20a1510d6a.sel4.cloudtype.app/main_crossboard";
+// API 데이터 가져오기 함수
+async function fetchCrossboardData(useMock = true) {
+    // const apiUrl = "http://13.124.65.0:8000/main_crossboard";
 
-    try {
-        const response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }); 
+    // try {
+    //     const response = await fetch(apiUrl, {
+    //         method: 'GET',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         }
+    //     }); 
 
-        if (!response.ok) {
-            throw new Error(`HTTP 오류 발생: ${response.status}`);
-        }
+    //     if (!response.ok) {
+    //         throw new Error(`HTTP 오류 발생: ${response.status}`);
+    //     }
 
-        const data = await response.json(); // 응답 데이터를 JSON으로 변환
+    //     const data = await response.json(); // 응답 데이터를 JSON으로 변환
 
-        console.log(data)
+    //     console.log(data)
         
-        return data; // 데이터를 반환
-    } catch (error) {
-        console.error('API 호출 중 오류 발생:', error);
-        return { message: '오류가 발생했습니다.' }; // 에러 메시지 반환
+    //     return data; // 데이터를 반환
+    // } catch (error) {
+    //     console.error('API 호출 중 오류 발생:', error);
+    //     return { message: '오류가 발생했습니다.' }; // 에러 메시지 반환
+    // }
+    if (useMock) {
+        // 테스트용 데이터
+        
+        const mockData = {
+            id: 1,
+            color: "red",
+            time_remaining: 3,
+            longitude: 127.001,
+            latitude: 37.001,
+            green_total_time: 5,
+            red_total_time: 20,
+            non_blinker: false,
+            car_approaching: false,
+            clear_to_board: false
+        };
+        return new Promise((resolve) => {
+            setTimeout(() => resolve(mockData), 1000);
+        });
     }
 }
 
 
 // 카운트다운 함수
-function startCountdown(timeToChange, isGreenLight, isFlashing = false,  green_total_time) {
+function startCountdown(timeToChange, isGreenLight, isFlashing = false, green_total_time) {
     clearInterval(countdownInterval);
 
     const countdownElement = document.getElementById('countdown');
-    
+    const stopNavigationButton = document.getElementById('stop-navigation');
+    const iconElement = document.getElementById('icon'); // 아이콘 요소 가져오기
+
     // 카운트다운 색상 설정
     countdownElement.classList.remove('red', 'green', 'blink');
     countdownElement.classList.add(isGreenLight ? 'green' : 'red');
+    countdownElement.style.color = '#FFFFFF'; // 남은 시간을 흰색 글씨로 표시
+    
+
+    // 숫자를 아예 제거 (초기화)
+    stopNavigationButton.style.backgroundColor = isGreenLight ? 'green' : 'red';
 
     // 깜박임을 위한 변수
     let blinkInterval;
 
     // 카운트다운 시작
     countdownInterval = setInterval(() => {
-        countdownElement.textContent = timeToChange;
+        // 카운트다운 업데이트는 하지 않음 (숫자를 표시하지 않기 때문)
+
         // 시간이 60% 이하로 남았고 초록불인 경우 깜박이기 시작
         if (isGreenLight && timeToChange <= green_total_time * 0.6) {
-            // 깜박임이 아직 시작되지 않았으면 시작
+
             if (!blinkInterval) {
                 blinkInterval = setInterval(() => {
-                    countdownElement.style.visibility = countdownElement.style.visibility === 'hidden' ? 'visible' : 'hidden';
+                    const visibilityState = stopNavigationButton.style.visibility === 'hidden' ? 'visible' : 'hidden';
+                    stopNavigationButton.style.visibility = visibilityState; // 버튼 깜박임
                 }, 500); // 500ms 간격으로 깜박임
             }
-            if(timeToChange > 0) {
-                speak(`${timeToChange}`)
+
+            // 음성 알림
+            if (timeToChange > 0) {
+                speak(`${timeToChange}`);
             }
-            
         }
 
         // 시간이 0초가 될 때의 동작
         if (timeToChange === 0) {
             clearInterval(countdownInterval);
             if (blinkInterval) clearInterval(blinkInterval); // 깜박임 멈춤
-            countdownElement.style.visibility = 'visible'; // 최종적으로 보이도록 설정
+            stopNavigationButton.style.visibility = 'visible'; // 버튼 보이기
+            iconElement.style.visibility = 'visible'; // 아이콘 다시 보이기
 
             if (isGreenLight) {
                 speak("빨간 불입니다");
@@ -82,14 +112,14 @@ function startCountdown(timeToChange, isGreenLight, isFlashing = false,  green_t
             } else {
                 speak("초록 불입니다");
                 color = 'green';
-                startCountdown(green_total_time, true, false, green_total_time); // 새로운 초록 불 카운트다운 시작 
+                startCountdown(green_total_time, true, false, green_total_time); // 새로운 초록 불 카운트다운 시작
             }
         }
         timeToChange -= 1;
     }, 1000);
 }
 
-// 차량 접근 확인 함수
+
 async function monitorCarApproach(duration) {
     const startTime = Date.now(); // 시작 시간 기록
     let vehicleAlerted = false; // 차량 접근 안내 여부 플래그
@@ -161,7 +191,6 @@ function updateTrafficLightStatus(data) {
                 speak("초록 불입니다.");
             } else {
                 speak(`현재 빨간 불입니다. 초록 불까지 ${time_remaining}초 남았습니다.`);
-                console.log(1)
             }
             startCountdown(time_remaining, false, false, green_total_time); // 빨간 불 카운트다운
         } else if (color === 'green') {
@@ -177,33 +206,46 @@ function updateTrafficLightStatus(data) {
     }
 }
 
-
 let navigationInterval = null;
 
 // 데이터 폴링 함수
 async function pollData() {
     try {
         const data = await fetchCrossboardData(true); // Mock 데이터 사용
-
         if (data) {
             updateTrafficLightStatus(data); // 데이터 처리
+            return data; // 데이터 반환
         } else {
             console.warn("fetchCrossboardData에서 null 반환");
         }
     } catch (error) {
         console.error("pollData에서 오류 발생:", error); // 오류 확인
-    } finally {
-        // 3초 후 재호출
-        // navigationInterval = setTimeout(pollData, 3000);
     }
+    return null; // 오류가 발생하거나 데이터가 없는 경우 null 반환
 }
 
 // 네비게이션 시작 함수
 function startNavigation() {
     console.log("startNavigation 호출됨"); // 디버깅 로그
+
+    // start-navigation 버튼 숨기기
     document.getElementById('start-navigation').style.display = 'none';
-    document.getElementById('stop-navigation').style.display = 'block';
-    pollData(); // 폴링 시작
+    // stop-navigation 버튼 보이기
+    const stopButton = document.getElementById('stop-navigation');
+    stopButton.style.display = 'block';
+
+    // 데이터 폴링 시작
+    pollData().then((data) => {
+        if (data.non_blinker) {
+            // 신호등 없는 횡단보도
+            speak("신호등이 없는 보도입니다.");
+            monitorCarApproach(3000); // 3초 동안 차량 접근 확인 멘트 분리
+        } else if (data.color === 'red') {
+            stopButton.style.backgroundColor = '#ff0000'; // 빨간색 배경
+        } else if (data.color === 'green') {
+            stopButton.style.backgroundColor = '#00ff00'; // 초록색 배경
+        }
+    });
 }
 
 // 네비게이션 종료 함수
@@ -215,9 +257,11 @@ function stopNavigation() {
     document.getElementById('start-navigation').style.display = 'block';
     document.getElementById('stop-navigation').style.display = 'none';
     document.getElementById('countdown').textContent = ""; // 카운트다운 초기화
-    speak("신호등 정보 알림을 종료합니다.");
+    speak("안내를 종료합니다.");
 }
 
 // 버튼 클릭 이벤트
 document.getElementById('start-navigation').addEventListener('click', startNavigation);
 document.getElementById('stop-navigation').addEventListener('click', stopNavigation);
+
+

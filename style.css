@@ -1,125 +1,190 @@
-/* 기본 스타일 설정 */
-* {
+/* Reset CSS */
+body, html {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-}
-
-body, html {
     width: 100%;
     height: 100%;
-    background-color: #1a1a1a;
-    color: #f1f1f1;
-    font-family: 'Spoqa Han Sans Neo', sans-serif;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    justify-content: flex-start; /* 상단 정렬 */
+    background-color: #000; /* 검은 배경 */
+}
+
+.app-container {
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.white-box {
+    position: absolute;
+    top: 18%;
+    bottom: 15%;
+    left: 12%;
+    right: 12%;
+    background-color: #fff;
+    border-radius: 50px; /* 둥근 테두리 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    border: none; /* 버튼 기본 테두리 제거 */
+    cursor: pointer; /* 버튼임을 나타내는 포인터 커서 */
+    outline: none; /* 포커스 시 윤곽선 제거 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 0; /* 버튼 기본 여백 제거 */
+}
+
+
+.text-container {
+    position: absolute;
+    top: 5%; /* 앱 전체 기준으로 상단에서 5% */
+    width: 100%; /* 중앙 정렬을 위한 가로 100% */
     text-align: center;
 }
 
-/* 헤더 스타일 */
-header {
-    width: 100%;
-    padding: 15px 20px;
+.title {
+    display: flex;
+    justify-content: center;
+    gap: 8px; /* 문자 및 원 사이 간격 */
+    align-items: center; /* 수평 정렬 */
+    position: relative;
+    z-index: 1;
+}
+
+.char-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.char {
+    font-size: 32px; /* 문자 크기 */
+    font-weight: bold;
+    color: #000; /* 검정 글자 */
+    position: relative;
+    z-index: 2;
+    margin-top: 5px; /* 문자와 원 사이 약간의 간격 */
+    text-align: center;
+}
+
+.circle {
+    position: absolute;
+    top: calc(50% - 2px); /* 부모 요소의 중심에서 4px 위로 이동 */
+    left: 50%;
+    width: 45px; /* 원 크기 */
+    height: 45px;
+    background-color: #fff; /* 흰색 원 */
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1; /* 문자 뒤에 위치 */
+}
+
+.subtitle {
+    font-size: 28px;
+    margin: 2% 0 0; /* 간격 줄임 */
+    color: #fff; /* 흰색 글자 */
+}
+
+.independent-circle-group {
+    position: absolute;
+    bottom: 5%; /* white-box 하단과 app-container 하단 사이 */
+    left: 50%; /* 좌우 중앙 정렬 */
+    transform: translateX(-50%);
     display: flex;
     align-items: center;
-    justify-content: space-between; /* 양쪽 정렬 */
-    color: #f1f1f1;
+    gap: -20px; /* 원이 겹치도록 설정 */
+    z-index: 1;
+
 }
 
-header h1 {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #f1f1f1;
-    letter-spacing: 0.1em; /* 문자 간격을 추가하여 스타일 */
-    margin: 0;
+/* 흰색 배경 원 */
+.background-circle {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: #fff;
+    position: absolute;
+    z-index: 0; /* 색상 원 뒤에 위치 */
 }
 
-/* 헤더 아이콘 스타일 */
-header .material-symbols-outlined {
-    font-size: 1.8em; /* 아이콘 크기 설정 */
-    cursor: pointer;
-    transition: color 0.3s;
+.background-circle:nth-child(1) {
+    left: calc(50%);
+    transform: translateX(-100%);
 }
 
-header .material-symbols-outlined:hover {
-    color: #ccc; /* 아이콘 호버 시 색상 변경 */
+.background-circle:nth-child(2) {
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-/* 컨테이너 스타일 */
-.container {
-    width: 100%;
-    max-width: 320px; /* 스마트폰에 적합한 최대 너비 */
-    padding: 20px;
+.background-circle:nth-child(3) {
+    left: calc(50%);
+    transform: translateX(0%);
+}
+
+.independent-circle-group .independent-circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    opacity: 1; /* 약간의 투명도 */
+    position: relative;
+}
+
+.independent-circle-group .red {
+    background-color: rgba(255, 61, 61, 0.8); /* 빨간색 */
+}
+
+.independent-circle-group .yellow {
+    background-color: rgba(255, 215, 0, 0.8); /* 노란색 */
+    margin-left: -15px; /* 겹침 효과 */
+}
+
+.independent-circle-group .green {
+    background-color: rgba(76, 175, 80, 0.8); /* 초록색 */
+    margin-left: -15px; /* 겹침 효과 */
+}
+
+/* 아이콘 */
+.icon-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 중앙 정렬 */
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: 30px; /* 숫자와 버튼 사이의 간격 */
-    margin-top: 20px; /* 헤더 아래 공간 추가 */
 }
 
-button {
-    width: 70%; /* 가로 너비 조정 */
-    padding: 18px 0; /* 높이 조정 */
-    font-size: 1.2em;
+.center-icon {
+    width: 80px; /* 아이콘 크기 조절 */
+    height: 80px;
+    object-fit: contain; /* 아이콘 비율 유지 */
+}
+
+.white-box.green {
+    background-color: #4caf50; /* 초록색 */
+}
+
+.white-box.red {
+    background-color: #f44336; /* 빨간색 */
+}
+
+.white-box.blink {
+    animation: blink 0.5s steps(1, end) infinite;
+}
+
+/* 카운트다운 숫자 */
+#countdown {
+    font-size: 5rem;
     font-weight: bold;
-    color: #1a1a1a;
-    background-color: #bbb;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    
-    font-family: "Jua", sans-serif;
 }
 
-button:hover {
-    background-color: #ddd;
-}
-
-/* 카운트다운 숫자 스타일 */
-.countdown {
-    font-size: 7em; /* 숫자 크기를 더 크게 */
-    font-weight: bold;
-    color: transparent; /* 기본 투명, JavaScript에서 색상 설정 */
-}
-
-/* 빨간색 숫자 */
-.countdown.red {
-    color: #ff4d4d;
-}
-
-/* 초록색 숫자 */
-.countdown.green {
-    color: #4CAF50;
-}
-
-/* 점멸 효과 */
-.countdown.blink {
-    animation: blink-animation 1s steps(2, start) infinite;
-}
-
-@keyframes blink-animation {
+@keyframes blink {
     50% {
         opacity: 0;
-    }
-}
-
-/* 반응형 스타일 - 작은 화면에 맞춤 */
-@media (max-width: 480px) {
-    .container {
-        padding: 10px;
-        gap: 20px;
-    }
-    
-    button {
-        width: 80%; /* 작은 화면에서 버튼 너비 증가 */
-        padding: 15px 0;
-        font-size: 1.1em;
-    }
-
-    .countdown {
-        font-size: 6em; /* 작은 화면에서 숫자 크기 조정 */
     }
 }
